@@ -22,6 +22,12 @@ public class StockException extends Exception {
 		this.message = message;
 	}
 
+	public StockException(HttpStatus errorCode, String message) {
+		super();
+		this.message = message;
+		this.errorCode = errorCode;
+	}
+
 	public StockException(Throwable cause, String message) {
 		super();
 		this.cause = cause;

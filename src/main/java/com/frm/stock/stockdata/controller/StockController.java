@@ -3,6 +3,8 @@ package com.frm.stock.stockdata.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.frm.stock.stockdata.exception.StockException;
 import com.frm.stock.stockdata.model.Stock;
 import com.frm.stock.stockdata.service.StockService;
 
@@ -27,6 +30,9 @@ public class StockController {
 	@Autowired
 	private StockService stockService;
 
+	@Value("${message400}")
+	private String errorMessage400;
+
 	public StockController() {
 		super();
 	}
@@ -36,9 +42,11 @@ public class StockController {
 			@ApiResponse(code = 200, message = "Success|OK"),
 			@ApiResponse(code = 404, message = "not found!!!") })
 	@GetMapping("/frm/{stockname}")
-	public List<Stock> getStockByStockName(@PathVariable("stockname") String stockName) {
-
-		return null;
+	public List<Stock> getStockByStockName(@PathVariable("stockname") String stockName) throws StockException {
+		if(null == stockName) {
+			throw new StockException(HttpStatus.BAD_REQUEST,errorMessage400);
+		}
+		return stockService.getStockByStockName(stockName);
 
 	}
 
@@ -50,9 +58,8 @@ public class StockController {
 	public List<Stock> getStock(@RequestParam(name = "stockname") String stockName,
 			@RequestParam(name = "companyName") String companyName,
 			@RequestParam(name = "buyerName") String buyerName) {
-
-		return null;
-
+				return null;
+	
 	}
 
 	@ApiOperation(value = "create Stock in the System ", response = List.class, tags = "createStock")

@@ -21,8 +21,7 @@ public class StockServiceImpl implements StockService{
 
 	@Override
 	public List<Stock> getStockByStockName(String stockName) {
-		// TODO Auto-generated method stub
-		return null;
+		return stockDao.getStockByStockName(stockName);
 	}
 
 	@Override

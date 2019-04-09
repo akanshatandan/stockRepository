@@ -1,5 +1,6 @@
 package com.frm.stock.stockdata.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -16,8 +17,15 @@ public class StockDaoImpl implements StockDao{
 
 	@Override
 	public List<Stock> getStockByStockName(String stockName) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Stock> stockList = new ArrayList<>();
+	    Stock s1 = new Stock();
+	    s1.setStockId(1);
+	    s1.setStockName("NSE");
+	    s1.setCompanyName("Infy");
+	    s1.setBuyerName("Arun");
+	    s1.setNoOfStocks(100);
+	    stockList.add(s1);
+		return stockList;
 	}
 
 	@Override
