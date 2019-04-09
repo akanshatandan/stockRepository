@@ -28,7 +28,7 @@ public class Stock implements Serializable{
 		super();
 		this.companyName = companyName;
 		this.buyerName = buyerName;
-		noOfStocks = noOfStocks;
+		this.noOfStocks = noOfStocks;
 		this.stockName = stockName;
 	}
 
@@ -53,7 +53,7 @@ public class Stock implements Serializable{
 	}
 
 	public void setNoOfStocks(int noOfStocks) {
-		noOfStocks = noOfStocks;
+		this.noOfStocks = noOfStocks;
 	}
 
 	public String getStockName() {
