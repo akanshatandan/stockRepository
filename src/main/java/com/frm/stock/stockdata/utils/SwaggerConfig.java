@@ -20,9 +20,9 @@ public class SwaggerConfig {
     public Docket api() { 
         return new Docket(DocumentationType.SWAGGER_2)  
           .select()                                  
-          .apis(RequestHandlerSelectors.any())              
+          .apis(RequestHandlerSelectors.basePackage("com.frm.stock.stockdata.controller"))              
           .paths(PathSelectors.any())                          
-          .build();                                           
+          .build().apiInfo(apiInfo());                                           
     }
     
     private ApiInfo apiInfo() {
@@ -31,7 +31,7 @@ public class SwaggerConfig {
           "Some custom description of API.", 
           "API TOS", 
           "Terms of service", 
-          new Contact("Akansha Tandan", "www.stock.com", "akansha.tandan@iriscompany.com"), 
+          new Contact("Akansha Tandan", "www.stock.com", "akansha.tandan@gmail.com"), 
           "License of API", "API license URL", Collections.emptyList());
     }
 }

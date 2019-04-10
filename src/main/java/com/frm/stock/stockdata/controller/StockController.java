@@ -2,6 +2,8 @@ package com.frm.stock.stockdata.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -22,13 +24,14 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-
 @RestController
 @RequestMapping("/stock")
 public class StockController {
-	
+
 	@Autowired
 	private StockService stockService;
+
+	private Logger logger = LoggerFactory.getLogger(StockController.class);
 
 	@Value("${message400}")
 	private String errorMessage400;
@@ -38,33 +41,32 @@ public class StockController {
 	}
 
 	@ApiOperation(value = "Get list of Stocks based on StockName in the System ", response = List.class, tags = "getStockByStockName")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success|OK"),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success|OK"),
 			@ApiResponse(code = 404, message = "not found!!!") })
 	@GetMapping("/frm/{stockname}")
 	public List<Stock> getStockByStockName(@PathVariable("stockname") String stockName) throws StockException {
-		if(null == stockName) {
-			throw new StockException(HttpStatus.BAD_REQUEST,errorMessage400);
+		logger.debug("Entering into getStockByStockname method");
+		if (null == stockName) {
+			logger.error("Throw exception");
+			throw new StockException(HttpStatus.BAD_REQUEST, errorMessage400);
 		}
 		return stockService.getStockByStockName(stockName);
 
 	}
 
 	@ApiOperation(value = "Get list of Stocks in the System ", response = List.class, tags = "getStock")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success|OK"),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success|OK"),
 			@ApiResponse(code = 404, message = "not found!!!") })
 	@GetMapping("/frm")
 	public List<Stock> getStock(@RequestParam(name = "stockname") String stockName,
 			@RequestParam(name = "companyName") String companyName,
 			@RequestParam(name = "buyerName") String buyerName) {
-				return null;
-	
+		return null;
+
 	}
 
 	@ApiOperation(value = "create Stock in the System ", response = List.class, tags = "createStock")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success|OK") })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success|OK") })
 	@PostMapping("/frm/createStock")
 	public List<Stock> createStock(@RequestBody List<Stock> stock) {
 
@@ -73,8 +75,7 @@ public class StockController {
 	}
 
 	@ApiOperation(value = "update Stock in the System ", response = List.class, tags = "updateStock")
-	@ApiResponses(value = { 
-			@ApiResponse(code = 200, message = "Success|OK"),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success|OK"),
 			@ApiResponse(code = 404, message = "not found!!!") })
 	@PutMapping("/frm/update/{stockId}")
 	public Stock updateStock(@PathVariable("stockId") int stockId, @RequestBody Stock stock) {
