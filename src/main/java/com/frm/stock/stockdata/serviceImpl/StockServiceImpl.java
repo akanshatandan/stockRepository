@@ -9,44 +9,45 @@ import org.springframework.stereotype.Service;
 
 import com.frm.stock.stockdata.dao.StockDao;
 import com.frm.stock.stockdata.daoImpl.StockDaoImpl;
+import com.frm.stock.stockdata.exception.StockException;
 import com.frm.stock.stockdata.model.Stock;
 import com.frm.stock.stockdata.service.StockService;
 
 @Service
-public class StockServiceImpl implements StockService{
+public class StockServiceImpl implements StockService {
 
 	private Logger logger = LoggerFactory.getLogger(StockDaoImpl.class);
 
 	@Autowired
 	private StockDao stockDao;
-	
+
 	public StockServiceImpl() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public List<Stock> getStockByStockName(String stockName) {
+	public Stock getStockByStockName(String stockName) throws StockException {
 		logger.debug("Entering into method getStockByStockName");
 		return stockDao.getStockByStockName(stockName);
 	}
 
 	@Override
 	public List<Stock> getStock(String stockName, String companyName, String buyerName) {
-		// TODO Auto-generated method stub
-		return null;
+		logger.debug("Entering into method getStock");
+		return stockDao.getStock(stockName, companyName, buyerName);
 	}
 
 	@Override
-	public List<Stock> createStock(List<Stock> stockList) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Stock> createStock(Stock stock) {
+		logger.debug("Entering into method createStock");
+		return stockDao.createStock(stock);
 	}
 
 	@Override
 	public Stock updateStock(int stockId, Stock stock) {
-		// TODO Auto-generated method stub
-		return null;
+		logger.debug("Entering into method updateStock");
+		return stockDao.updateStock(stockId, stock);
 	}
 
 }

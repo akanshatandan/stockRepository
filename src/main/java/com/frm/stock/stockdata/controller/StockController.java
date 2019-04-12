@@ -1,5 +1,6 @@
 package com.frm.stock.stockdata.controller;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -44,14 +45,19 @@ public class StockController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success|OK"),
 			@ApiResponse(code = 404, message = "not found!!!") })
 	@GetMapping("/frm/{stockname}")
-	public List<Stock> getStockByStockName(@PathVariable("stockname") String stockName) throws StockException {
+	public Stock getStockByStockName(@PathVariable("stockname") String stockName) {
 		logger.debug("Entering into getStockByStockname method");
 		if (null == stockName) {
 			logger.error("Throw exception");
-			throw new StockException(HttpStatus.BAD_REQUEST, errorMessage400);
+			//throw new StockException(HttpStatus.BAD_REQUEST, errorMessage400);
 		}
+		try {
 		return stockService.getStockByStockName(stockName);
-
+		}catch(StockException ex) {
+			logger.error("not found",HttpStatus.NOT_FOUND);
+			
+		}
+		return null;
 	}
 
 	@ApiOperation(value = "Get list of Stocks in the System ", response = List.class, tags = "getStock")
@@ -60,17 +66,21 @@ public class StockController {
 	@GetMapping("/frm")
 	public List<Stock> getStock(@RequestParam(name = "stockname") String stockName,
 			@RequestParam(name = "companyName") String companyName,
-			@RequestParam(name = "buyerName") String buyerName) {
-		return null;
-
+			@RequestParam(name = "buyerName") String buyerName) throws StockException {
+		logger.debug("Entering into getStock method");
+		if (null == stockName) {
+			logger.error("Throw exception");
+			throw new StockException(HttpStatus.BAD_REQUEST, errorMessage400);
+		}
+		return stockService.getStock(stockName,companyName,buyerName);
 	}
 
 	@ApiOperation(value = "create Stock in the System ", response = List.class, tags = "createStock")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success|OK") })
 	@PostMapping("/frm/createStock")
-	public List<Stock> createStock(@RequestBody List<Stock> stock) {
-
-		return null;
+	public List<Stock> createStock(@RequestBody Stock stock) {
+        
+		return stockService.createStock(stock);
 
 	}
 
@@ -80,7 +90,7 @@ public class StockController {
 	@PutMapping("/frm/update/{stockId}")
 	public Stock updateStock(@PathVariable("stockId") int stockId, @RequestBody Stock stock) {
 
-		return null;
+		return stockService.updateStock(stockId, stock);
 
 	}
 
