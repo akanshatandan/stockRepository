@@ -13,19 +13,27 @@ public class StockException extends Exception {
 
 	private String message;
 
-	private HttpStatus errorCode;
+	private HttpStatus errorStatus;
+	
+	private int errorCode;
 
 	private String errorName;
+
+	
+	public StockException() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public StockException(String message) {
 		super();
 		this.message = message;
 	}
 
-	public StockException(HttpStatus errorCode, String message) {
+	public StockException(HttpStatus errorStatus, String message) {
 		super();
 		this.message = message;
-		this.errorCode = errorCode;
+		this.errorStatus = errorStatus;
 	}
 
 	public StockException(Throwable cause, String message) {
@@ -34,18 +42,18 @@ public class StockException extends Exception {
 		this.message = message;
 	}
 
-	public StockException(Throwable cause, String message, HttpStatus errorCode) {
+	public StockException(Throwable cause, String message, HttpStatus errorStatus) {
 		super();
 		this.cause = cause;
 		this.message = message;
-		this.errorCode = errorCode;
+		this.errorStatus = errorStatus;
 	}
 
-	public StockException(Throwable cause, String message, HttpStatus errorCode, String errorName) {
+	public StockException(Throwable cause, String message, HttpStatus errorStatus, String errorName) {
 		super();
 		this.cause = cause;
 		this.message = message;
-		this.errorCode = errorCode;
+		this.errorStatus = errorStatus;
 		this.errorName = errorName;
 	}
 
@@ -65,11 +73,19 @@ public class StockException extends Exception {
 		this.message = message;
 	}
 
-	public HttpStatus getErrorCode() {
+	public HttpStatus getErrorStatus() {
+		return errorStatus;
+	}
+
+	public void setErrorStatus(HttpStatus errorStatus) {
+		this.errorStatus = errorStatus;
+	}
+
+	public int getErrorCode() {
 		return errorCode;
 	}
 
-	public void setErrorCode(HttpStatus errorCode) {
+	public void setErrorCode(int errorCode) {
 		this.errorCode = errorCode;
 	}
 

@@ -8,11 +8,11 @@ import com.frm.stock.stockdata.model.Stock;
 public interface StockDao {
 	public Stock getStockByStockName(String stockName) throws StockException ;
 
-	public List<Stock> getStock(String stockName, String companyName, String buyerName);
+	public Stock getStock(String stockName, String companyName, String buyerName) throws StockException;
 
-	public List<Stock> createStock(Stock stock);
+	public List<Stock> createStock(Stock stock) throws StockException;
 
-	public Stock updateStock(int stockId, Stock stock);
+	public Stock updateStock(int stockId, Stock stock) throws StockException;
 
 	Stock getStockById(int stockId);
 

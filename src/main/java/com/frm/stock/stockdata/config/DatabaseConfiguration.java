@@ -1,4 +1,4 @@
-package com.frm.stock.stockdata.utils;
+package com.frm.stock.stockdata.config;
 
 import java.sql.SQLException;
 

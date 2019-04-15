@@ -1,4 +1,4 @@
-package com.frm.stock.stockdata.utils;
+package com.frm.stock.stockdata.dao.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -9,10 +9,10 @@ public interface StockService {
 
 	public Stock getStockByStockName(String stockName) throws StockException;
 
-	public List<Stock> getStock(String stockName, String companyName, String buyerName);
+	public Stock getStock(String stockName, String companyName, String buyerName) throws StockException;
 
-	public List<Stock> createStock(Stock stockList);
+	public List<Stock> createStock(Stock stockList) throws StockException;
 
-	public Stock updateStock(int stockId, Stock stock);
+	public Stock updateStock(int stockId, Stock stock) throws StockException;
 
 }
