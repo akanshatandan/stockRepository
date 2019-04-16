@@ -18,7 +18,7 @@ public class StockConstant {
 
 	public static final String COMPANYNAME = "companyName";
 
-	public static final String NOOFSTOCKS = "NoOfStocks";
+	public static final String NOOFSTOCKS = "noOfStocks";
 
 	public static final String STOCKID = "stockId";
 

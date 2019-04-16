@@ -99,11 +99,13 @@ public class StockDaoImpl implements StockDao {
 	public Stock updateStock(int stockId, Stock stock) throws StockException {
 		logger.debug("Entering into method updateStock");
 		try {
+			
 			SqlParameterSource namedParameters = new MapSqlParameterSource()
 					.addValue(StockConstant.STOCKNAME, stock.getStockName())
 					.addValue(StockConstant.BUYERNAME, stock.getBuyerName())
 					.addValue(StockConstant.COMPANYNAME, stock.getCompanyName())
-					.addValue(StockConstant.NOOFSTOCKS, stock.getNoOfStocks()).addValue(StockConstant.STOCKID, stock.getStockId());
+					.addValue(StockConstant.NOOFSTOCKS, stock.getNoOfStocks())
+					.addValue(StockConstant.STOCKID, stock.getStockId());
 
 			namedJdbcTemplate.update(StockQuery.SQL_UPDATE, namedParameters);
 			logger.debug("Stock is updated successfully");
@@ -111,7 +113,7 @@ public class StockDaoImpl implements StockDao {
 			logger.error("The exception is   {}", se.getCause());
 			throw new StockException(se.getCause(), StockConstant.NOT_CREATED, HttpStatus.NOT_FOUND);
 		}
-		return getStockById(stockId);
+		return stock;
 	}
 
 	@Override

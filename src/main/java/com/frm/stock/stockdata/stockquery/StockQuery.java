@@ -12,6 +12,5 @@ public class StockQuery {
 
 	public static final String SQL_GET_STOCK = "SELECT * FROM STOCK where stockName=:stockName OR buyerName= :buyerName OR companyName=:companyName";
 
-	public static final String SQL_UPDATE = "UPDATE Stock SET stockName = :stockName , buyerName= :buyerName , "
-			+ "companyName=:companyName , NoOfStocks =:NoOfStocks where stockId = :stockId";
+	public static final String SQL_UPDATE = "UPDATE Stock SET stockName = :stockName , buyerName= :buyerName , companyName=:companyName , noOfStocks =:noOfStocks where stockId = :stockId";
 }

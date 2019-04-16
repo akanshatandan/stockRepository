@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -44,14 +45,14 @@ public class StockServiceImpl implements StockService {
 		return stockDao.getStock(stockName, companyName, buyerName);
 	}
 
-	@Cacheable(value = "StockServiceCache", key = "#stock")
+	@CacheEvict(value = "StockServiceCache", key = "#stock",allEntries=true)
 	@Override
 	public List<Stock> createStock(Stock stock) throws StockException {
 		logger.debug("Entering into method createStock");
 		return stockDao.createStock(stock);
 	}
 
-	@CacheEvict(value = "StockServiceCache", key = "#stockId")
+	@CachePut(value = "StockServiceCache", key = "#stockId")
 	@Override
 	public Stock updateStock(int stockId, Stock stock) throws StockException {
 		logger.debug("Entering into method updateStock");
