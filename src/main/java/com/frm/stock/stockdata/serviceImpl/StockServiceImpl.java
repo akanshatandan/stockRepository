@@ -33,7 +33,7 @@ public class StockServiceImpl implements StockService {
 
 	@Cacheable(value = "StockServiceCache", key = "#stockName")
 	@Override
-	public Stock getStockByStockName(String stockName) throws StockException {
+	public List<Stock> getStockByStockName(String stockName) throws StockException {
 		logger.debug("Entering into method getStockByStockName");
 		return stockDao.getStockByStockName(stockName);
 	}
@@ -58,5 +58,11 @@ public class StockServiceImpl implements StockService {
 		logger.debug("Entering into method updateStock");
 		return stockDao.updateStock(stockId, stock);
 	}
+
+	@Override
+	public Stock buyedStock(int stockId, int buyedStock) throws StockException {
+		logger.debug("Entering into method updateStock");
+		return stockDao.buyedStock(stockId,buyedStock);	
+		}
 
 }

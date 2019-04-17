@@ -7,12 +7,14 @@ import com.frm.stock.stockdata.model.Stock;
 
 public interface StockService {
 
-	public Stock getStockByStockName(String stockName) throws StockException;
+	public List<Stock> getStockByStockName(String stockName) throws StockException;
 
 	public Stock getStock(String stockName, String companyName, String buyerName) throws StockException;
 
 	public List<Stock> createStock(Stock stockList) throws StockException;
 
 	public Stock updateStock(int stockId, Stock stock) throws StockException;
+
+	public Stock buyedStock(int stockId, int buyedStock) throws StockException;
 
 }

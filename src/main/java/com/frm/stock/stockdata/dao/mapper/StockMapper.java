@@ -18,7 +18,8 @@ public class StockMapper implements RowMapper<Stock> {
 		stock.setBuyerName(rs.getString("buyerName"));
 		stock.setCompanyName(rs.getString("companyName"));
 		stock.setNoOfStocks(rs.getInt("noOfStocks"));
-
+		stock.setBuyedStocks(rs.getInt("buyedStocks"));
+		stock.setRemainingStocks(rs.getInt("remainingStocks"));
 		return stock;
 	}
 

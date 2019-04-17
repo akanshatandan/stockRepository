@@ -17,6 +17,10 @@ public class Stock implements Serializable{
 	private String buyerName;
 
 	private int noOfStocks;
+	
+	private int buyedStocks;
+	
+	private int remainingStocks;
 
 	private String stockName;
 
@@ -77,6 +81,22 @@ public class Stock implements Serializable{
 
 	public void setStockId(int stockId) {
 		this.stockId = stockId;
+	}
+
+	public int getBuyedStocks() {
+		return buyedStocks;
+	}
+
+	public void setBuyedStocks(int buyedStocks) {
+		this.buyedStocks = buyedStocks;
+	}
+
+	public int getRemainingStocks() {
+		return remainingStocks;
+	}
+
+	public void setRemainingStocks(int remainingStocks) {
+		this.remainingStocks = remainingStocks;
 	}
 
 }

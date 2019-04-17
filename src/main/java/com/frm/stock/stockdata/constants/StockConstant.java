@@ -22,8 +22,14 @@ public class StockConstant {
 
 	public static final String STOCKID = "stockId";
 
+	public static final String BUYED_STOCK = "buyedStocks";
+
+	public static final String REMAINING_STOCK = "remainingStocks";
+
 	public static final String NO_RECORD_FOUND = "no record found";
+
+	public static final String NOT_CREATED = "not Created";
 	
-	public static final String NOT_CREATED ="not Created";
+	public static final String NOT_AVAILABLE = "buyedstock is more than the stock available in the inventory";
 
 }

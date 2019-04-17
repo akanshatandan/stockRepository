@@ -47,7 +47,7 @@ public class StockController {
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success|OK"),
 			@ApiResponse(code = 404, message = "not found!!!") })
 	@GetMapping("/frm/{stockname}")
-	public ResponseEntity<Object> getStockByStockName(@PathVariable("stockname") String stockName)
+	public ResponseEntity<List<Stock>> getStockByStockName(@PathVariable("stockname") String stockName)
 			throws StockException {
 		logger.debug("Entering into getStockByStockname method");
 		long start = System.currentTimeMillis();
@@ -56,7 +56,7 @@ public class StockController {
 			throw new StockException(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.name());
 		}
 		try {
-			Stock stock = stockService.getStockByStockName(stockName);
+			List<Stock> stock = stockService.getStockByStockName(stockName);
 			long end = System.currentTimeMillis();
 			logger.debug("Time Took : " + ((end - start) / 1000 + " sec."));
 			return new ResponseEntity(stock, HttpStatus.OK);
@@ -127,4 +127,26 @@ public class StockController {
 		}
 	}
 
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@ApiOperation(value = "buy Stock in the System ", response = List.class, tags = "buyStock")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success|OK"),
+			@ApiResponse(code = 404, message = "not found!!!") })
+	@PutMapping("/frm/buystock/{stockId}/buystock/{buyedStock}")
+	public ResponseEntity<Object> buyStock(@PathVariable("stockId") int stockId,@PathVariable("buyedStock") int buyedStock) throws StockException {
+		logger.debug("Entering into updateStock method");
+		long start = System.currentTimeMillis();
+		Stock updatedStock = null;
+		try {
+			updatedStock = stockService.buyedStock(stockId,buyedStock);
+			long end = System.currentTimeMillis();
+			logger.debug("Time Took : " + ((end - start) / 1000 + " sec."));
+			return new ResponseEntity(updatedStock, HttpStatus.OK);
+		} catch (StockException ex) {
+			logger.error(HttpStatus.BAD_REQUEST.name(), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity(stockError.prepareError400(ex), HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	
 }

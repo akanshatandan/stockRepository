@@ -2,7 +2,7 @@ package com.frm.stock.stockdata.stockquery;
 
 public class StockQuery {
 	public static final String SQL_CREATE = "INSERT INTO STOCK"
-			+ "(stockId,stockName,buyerName,companyName,noOfStocks) VALUES (:stockId,:stockName,:buyerName,:companyName,:noOfStocks)";
+			+ "(stockId,stockName,buyerName,companyName,noOfStocks,buyedStocks,remainingStocks) VALUES (:stockId,:stockName,:buyerName,:companyName,:noOfStocks,:buyedStocks,:remainingStocks)";
 
 	public static final String SQL_GET_BY_NAME = "SELECT * FROM STOCK where stockName=:stockName";
 
@@ -13,4 +13,6 @@ public class StockQuery {
 	public static final String SQL_GET_STOCK = "SELECT * FROM STOCK where stockName=:stockName OR buyerName= :buyerName OR companyName=:companyName";
 
 	public static final String SQL_UPDATE = "UPDATE Stock SET stockName = :stockName , buyerName= :buyerName , companyName=:companyName , noOfStocks =:noOfStocks where stockId = :stockId";
+
+	public static final String SQL_UPDATE_STOCK = "UPDATE Stock SET stockName = :stockName , buyerName= :buyerName , companyName=:companyName , noOfStocks =:noOfStocks , buyedStocks=:buyedStocks,remainingStocks =:remainingStocks where stockId = :stockId";;
 }

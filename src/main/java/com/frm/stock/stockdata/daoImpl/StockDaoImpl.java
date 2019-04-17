@@ -1,5 +1,7 @@
 package com.frm.stock.stockdata.daoImpl;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,21 +35,33 @@ public class StockDaoImpl implements StockDao {
 		this.namedJdbcTemplate = namedJdbcTemplate;
 	}
 
-	@Override
-	public Stock getStockByStockName(String stockName) throws StockException {
-		logger.debug("Entering into method getStockByStockName");
+	public Stock toStock(ResultSet rs) throws SQLException {
+		System.out.println("inside mapper class...");
+		Stock stock = new Stock();
+		stock.setStockId(rs.getInt("stockId"));
+		stock.setStockName(rs.getString("stockName"));
+		stock.setBuyerName(rs.getString("buyerName"));
+		stock.setCompanyName(rs.getString("companyName"));
+		stock.setNoOfStocks(rs.getInt("noOfStocks"));
+		stock.setBuyedStocks(rs.getInt("buyedStocks"));
+		stock.setRemainingStocks(rs.getInt("remainingStocks"));
+		return stock;
+	}
 
-		Stock stock = null;
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Stock> getStockByStockName(String stockName) throws StockException {
+		logger.debug("Entering into method getStockByStockName");
 		try {
-			SqlParameterSource namedParameters = new MapSqlParameterSource(StockConstant.STOCKNAME, stockName);
-			stock = (Stock) namedJdbcTemplate.queryForObject(StockQuery.SQL_GET_BY_NAME, namedParameters,
-					new StockMapper());
-			logger.debug("The data is  {}", stock.toString());
+			return namedJdbcTemplate.query(StockQuery.SQL_GET_BY_NAME,
+					new MapSqlParameterSource(StockConstant.STOCKNAME, stockName), (resultSet, i) -> {
+						return toStock(resultSet);
+					});
 		} catch (DataAccessException ex) {
 			logger.error("The exception is   {}", ex.getCause());
 			throw new StockException("no record found");
 		}
-		return stock;
+		// return stock;
 	}
 
 	@Override
@@ -78,6 +92,8 @@ public class StockDaoImpl implements StockDao {
 			namedParameters.put(StockConstant.BUYERNAME, stock.getBuyerName());
 			namedParameters.put(StockConstant.COMPANYNAME, stock.getCompanyName());
 			namedParameters.put(StockConstant.NOOFSTOCKS, stock.getNoOfStocks());
+			namedParameters.put(StockConstant.REMAINING_STOCK, stock.getNoOfStocks());
+			namedParameters.put(StockConstant.BUYED_STOCK, stock.getNoOfStocks() - stock.getRemainingStocks());
 			namedJdbcTemplate.update(StockQuery.SQL_CREATE, namedParameters);
 			logger.debug("Data is created into database whose Id is {}", stock.getStockId());
 		} catch (DataAccessException se) {
@@ -99,7 +115,7 @@ public class StockDaoImpl implements StockDao {
 	public Stock updateStock(int stockId, Stock stock) throws StockException {
 		logger.debug("Entering into method updateStock");
 		try {
-			
+
 			SqlParameterSource namedParameters = new MapSqlParameterSource()
 					.addValue(StockConstant.STOCKNAME, stock.getStockName())
 					.addValue(StockConstant.BUYERNAME, stock.getBuyerName())
@@ -130,6 +146,31 @@ public class StockDaoImpl implements StockDao {
 		logger.debug("Entering into method getAllStocks");
 		List<Stock> stocks = namedJdbcTemplate.query(StockQuery.SQL_GET_ALL, new StockMapper());
 		return stocks;
+	}
+
+	@Override
+	public Stock buyedStock(int stockId, int buyedStock) throws StockException {
+		Stock dbStock = getStockById(stockId);
+		try {
+			if (dbStock.getRemainingStocks() >= buyedStock) {
+				SqlParameterSource namedParameters = new MapSqlParameterSource()
+						.addValue(StockConstant.STOCKNAME, dbStock.getStockName())
+						.addValue(StockConstant.BUYERNAME, dbStock.getBuyerName())
+						.addValue(StockConstant.COMPANYNAME, dbStock.getCompanyName())
+						.addValue(StockConstant.NOOFSTOCKS, dbStock.getNoOfStocks())
+						.addValue(StockConstant.STOCKID, dbStock.getStockId())
+						.addValue(StockConstant.BUYED_STOCK, dbStock.getBuyedStocks() + buyedStock)
+						.addValue(StockConstant.REMAINING_STOCK, dbStock.getRemainingStocks() - buyedStock);
+				namedJdbcTemplate.update(StockQuery.SQL_UPDATE_STOCK, namedParameters);
+				logger.debug("Stock is updated successfully");
+			} else {
+				throw new StockException(StockConstant.NOT_AVAILABLE);
+			}
+		} catch (DataAccessException se) {
+			logger.error("The exception is   {}", se.getCause());
+			throw new StockException(se.getCause(), StockConstant.NOT_CREATED, HttpStatus.NOT_FOUND);
+		}
+		return getStockById(stockId);
 	}
 
 }
