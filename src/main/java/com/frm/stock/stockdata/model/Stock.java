@@ -2,26 +2,34 @@ package com.frm.stock.stockdata.model;
 
 import java.io.Serializable;
 
-public class Stock implements Serializable{
-	
+import com.frm.stock.stockdata.utils.WorkBookInterface;
+
+public class Stock implements Serializable {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8562729756462832552L;
 
-	
+	@WorkBookInterface
 	private int stockId;
 
+	@WorkBookInterface
 	private String companyName;
 
+	@WorkBookInterface
 	private String buyerName;
 
+	@WorkBookInterface
 	private int noOfStocks;
-	
+
+	@WorkBookInterface
 	private int buyedStocks;
-	
+
+	@WorkBookInterface
 	private int remainingStocks;
 
+	@WorkBookInterface
 	private String stockName;
 
 	public Stock() {

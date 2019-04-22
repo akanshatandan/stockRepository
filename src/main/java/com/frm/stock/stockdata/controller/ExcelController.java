@@ -1,5 +1,6 @@
 package com.frm.stock.stockdata.controller;
 
+import java.beans.IntrospectionException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -63,7 +64,7 @@ public class ExcelController {
 	public ResponseEntity<List<Stock>> writeRecordDbToExcel()
 			throws StockException, NoSuchMethodException, SecurityException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException, IOException {
-		logger.debug("Entering into createExcel method");
+		logger.debug("Entering into writeRecordDbToExcel method");
 		long start = System.currentTimeMillis();
 		List<Stock> stock = excelService.getStocks();
 		excelWorkBook.createExcel("Stock", stock);
@@ -80,10 +81,11 @@ public class ExcelController {
 	@GetMapping("/readExcel")
 	public ResponseEntity<List<Stock>> readRecordExcelToDB()
 			throws StockException, NoSuchMethodException, SecurityException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException, IOException {
-		logger.debug("Entering into createExcel method");
+			IllegalArgumentException, InvocationTargetException, IOException, InstantiationException, IntrospectionException {
+		logger.debug("Entering into readRecordExcelToDB method");
 		long start = System.currentTimeMillis();
-		List<Stock> list = (List<Stock>) excelWorkBook.readRecordFromExcel();
+		List<Stock> list = (List<Stock>) excelWorkBook.readRecordFromExcel(Stock.class);
+		excelService.insertIntoDB(list);
 		long end = System.currentTimeMillis();
 		logger.debug("Time Took : " + ((end - start) / 1000 + " sec."));
 		return new ResponseEntity(list, HttpStatus.OK);

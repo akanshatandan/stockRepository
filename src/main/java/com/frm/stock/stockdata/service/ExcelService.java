@@ -8,4 +8,6 @@ public interface ExcelService {
 
 	List<Stock> getStocks();
 
+	void insertIntoDB(List<Stock> list);
+
 }

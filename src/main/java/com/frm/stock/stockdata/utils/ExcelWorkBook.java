@@ -1,10 +1,15 @@
 package com.frm.stock.stockdata.utils;
 
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -108,7 +113,6 @@ public class ExcelWorkBook<T> {
 		try {
 			fileOut = new FileOutputStream(new File("poi-generated-file.xlsx"));
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		getWorkbook().write(fileOut);
@@ -118,34 +122,68 @@ public class ExcelWorkBook<T> {
 		getWorkbook().close();
 	}
 
-	public <T> Object readRecordFromExcel() throws IOException {
+	@SuppressWarnings("hiding")
+	public <T> Object readRecordFromExcel(Class<T> t)
+			throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+			NoSuchMethodException, SecurityException, InstantiationException, IntrospectionException {
 		List<Object> fields = new ArrayList<>();
 		FileInputStream fileInput = new FileInputStream(new File("poi-generated-file.xlsx"));
 		XSSFWorkbook workbook = new XSSFWorkbook(fileInput);
 		XSSFSheet sheet = workbook.getSheetAt(0);
+		BeanInfo beanInfo = Introspector.getBeanInfo(t);
+		Constructor<T> constructor = t.getConstructor();
+	
 		int rowCount = sheet.getLastRowNum() - sheet.getFirstRowNum();
-		for (int i = 0; i < rowCount + 1; i++) {
-
+		PropertyDescriptor[] descriptors = beanInfo.getPropertyDescriptors();
+		Object obj = null;
+		for (int i = 1; i < rowCount + 1; i++) {
 			Row row = sheet.getRow(i);
-
-			// Create a loop to print cell values in a row
-
+			obj = new Object();
+			T t1 = constructor.newInstance();
 			for (int j = 0; j < row.getLastCellNum(); j++) {
-				// int k = row.getCell(j)..getCellType();
-
 				CellType type = row.getCell(j).getCellTypeEnum();
-				// Print Excel data in console
-				if (CellType.NUMERIC.equals(type)) {
-					fields.add(row.getCell(j).getNumericCellValue());
+				for (PropertyDescriptor desc : descriptors) {
+					Row row1 = sheet.getRow(0);
+					if (desc != null && !"class".equals(desc.getName())) {
+						if (desc.getWriteMethod() != null && desc.getWriteMethod().getGenericParameterTypes() != null) {
+							if (row1.getCell(j).toString().equals(desc.getName().trim())) {
+								if (CellType.NUMERIC.equals(type)) {
+									obj = invokeSetter(t1, desc.getName(), desc.getWriteMethod().getName(),
+											desc.getReadMethod().getName(), row.getCell(j).getNumericCellValue());
+								} else {
+									obj = invokeSetter(t1, desc.getName(), desc.getWriteMethod().getName(),
+											desc.getReadMethod().getName(), row.getCell(j).getStringCellValue());
+								}
+							}
+						}
+					}
 
-				} else {
-					fields.add(row.getCell(j).getStringCellValue());
 				}
-
 			}
-
+			fields.add(obj);
 		}
 		return fields;
+	}
+
+	private Object invokeSetter(Object obj, String variableName, String setter, String getter, Object variableValue) {
+		try {
+			PropertyDescriptor objPropertyDescriptor = new PropertyDescriptor(variableName, obj.getClass(), getter,
+					setter);
+			String stringValue = variableValue.toString();
+			String[] integerValue = stringValue.split("\\.");
+			if (variableValue instanceof Double) {
+
+				int value = Integer.parseInt(integerValue[0]);
+				objPropertyDescriptor.getWriteMethod().invoke(obj, value);
+			} else {
+				objPropertyDescriptor.getWriteMethod().invoke(obj, variableValue);
+			}
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| IntrospectionException e) {
+
+			e.printStackTrace();
+		}
+		return obj;
 	}
 
 	private String captalize(String field) {

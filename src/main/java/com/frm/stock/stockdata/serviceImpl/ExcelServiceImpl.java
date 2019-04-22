@@ -20,4 +20,9 @@ public class ExcelServiceImpl implements ExcelService{
 		return excelDao.getStocks();
 	}
 
+	@Override
+	public void insertIntoDB(List<Stock> list) {
+		excelDao.insertIntoDB(list);	
+	}
+
 }

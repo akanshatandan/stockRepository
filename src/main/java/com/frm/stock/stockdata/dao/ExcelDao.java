@@ -8,4 +8,6 @@ public interface ExcelDao {
 
 	List<Stock> getStocks();
 
+	void insertIntoDB(List<Stock> list);
+
 }
