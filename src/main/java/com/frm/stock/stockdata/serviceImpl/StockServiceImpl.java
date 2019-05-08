@@ -65,4 +65,9 @@ public class StockServiceImpl implements StockService {
 		return stockDao.buyedStock(stockId,buyedStock);	
 		}
 
+	@Override
+	public List<Stock> getAllStock() {
+		return  stockDao.getAllStock();
+	}
+
 }

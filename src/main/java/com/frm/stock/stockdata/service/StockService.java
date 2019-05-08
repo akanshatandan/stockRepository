@@ -17,4 +17,6 @@ public interface StockService {
 
 	public Stock buyedStock(int stockId, int buyedStock) throws StockException;
 
+	public List<Stock> getAllStock();
+
 }

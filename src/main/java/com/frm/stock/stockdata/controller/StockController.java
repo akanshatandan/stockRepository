@@ -51,7 +51,7 @@ public class StockController {
 			throws StockException {
 		logger.debug("Entering into getStockByStockname method");
 		long start = System.currentTimeMillis();
-		if (null == stockName) {
+		if (stockName.equals("null")) {
 			logger.error(StockConstant.NULL_FIELD_MESSAGE);
 			throw new StockException(HttpStatus.BAD_REQUEST, HttpStatus.BAD_REQUEST.name());
 		}
@@ -88,6 +88,24 @@ public class StockController {
 		return new ResponseEntity(stock, HttpStatus.OK);
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@ApiOperation(value = "Get list of Stocks in the System ", response = List.class, tags = "getStock")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success|OK"),
+			@ApiResponse(code = 404, message = "not found!!!") })
+	@GetMapping("all/frm")
+	public ResponseEntity<Object> getAllStock()
+			throws StockException {
+		logger.debug("Entering into getStock method");
+		long start = System.currentTimeMillis();
+		System.out.println("*******************************************************Inside controller******************************************************");
+		List<Stock> stock = null;
+			stock = stockService.getAllStock();
+			long end = System.currentTimeMillis();
+			logger.debug("Time Took : " + ((end - start) / 1000 + " sec."));
+		
+		return new ResponseEntity(stock, HttpStatus.OK);
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@ApiOperation(value = "create Stock in the System ", response = List.class, tags = "createStock")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Success|OK") })

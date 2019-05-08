@@ -1,4 +1,4 @@
-package com.frm.stock.stockdata.config;
+/*package com.frm.stock.stockdata.config;
 
 import java.sql.SQLException;
 
@@ -52,14 +52,14 @@ public class DatabaseConfiguration {
 	DataSource dataSource() throws SQLException {
 
 		
-		/*  DriverManagerDataSource driverManagerDataSource = new
+		  DriverManagerDataSource driverManagerDataSource = new
 		  DriverManagerDataSource();
 		  driverManagerDataSource.setUrl(environment.getProperty(url));
 		  driverManagerDataSource.setUsername(environment.getProperty(username));
 		  driverManagerDataSource.setPassword(environment.getProperty(password));
 		  driverManagerDataSource.setDriverClassName(environment.getProperty(driver));
 		  return driverManagerDataSource;
-		 */
+		 
 
 		OracleDataSource dataSource = new OracleDataSource();
 		dataSource.setUser(username);
@@ -72,3 +72,4 @@ public class DatabaseConfiguration {
 	}
 
 }
+*/

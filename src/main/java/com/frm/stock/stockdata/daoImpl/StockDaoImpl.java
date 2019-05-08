@@ -173,4 +173,11 @@ public class StockDaoImpl implements StockDao {
 		return getStockById(stockId);
 	}
 
+	@Override
+	public List<Stock> getAllStock() {
+		logger.debug("Entering into method getAllStocks");
+		List<Stock> stocks = namedJdbcTemplate.query(StockQuery.SQL_GET_ALL, new StockMapper());
+		return stocks;
+	}
+
 }

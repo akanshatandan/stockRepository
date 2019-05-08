@@ -20,4 +20,6 @@ public interface StockDao {
 
 	public Stock buyedStock(int stockId, int buyedStock) throws StockException;
 
+	public List<Stock> getAllStock();
+
 }
